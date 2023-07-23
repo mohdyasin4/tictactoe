@@ -1,30 +1,38 @@
-    const board = [null, null, null, null, null, null, null, null, null];
-        let currentPlayer = 'X';
-        let player1Wins = 0;
-        let player2Wins = 0;
-      
-        function checkWinner() {
-          const winningCombinations = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-          ];
-      
-          for (const combination of winningCombinations) {
-            const [a, b, c] = combination;
-            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-              highlightWinningCells([a, b, c]); // Highlight the winning cells
-              return board[a];
-            }
-          }
-      
-          if (!board.includes(null)) {
-            return 'tie';
-          }
-      
-          return null;
-        }
-      
+const board = [null, null, null, null, null, null, null, null, null];
+let currentPlayer = 'X';
+let player1Wins = 0;
+let player2Wins = 0;
+
+function checkWinner() {
+  const winningCombinations = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
+  for (const combination of winningCombinations) {
+    const [a, b, c] = combination;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+    highlightWinningCells([a, b, c]); // Highlight the winning cells
+
+      const winner = board[a];
+      if (winner === 'X') {
+        player1Wins++; // Increment Player 1's win count
+        document.getElementById('player1Score').innerHTML = `Wins: ${player1Wins}`;
+      } else if (winner === 'O') {
+        player2Wins++; // Increment Player 2's win count
+        document.getElementById('player2Score').innerHTML = `Wins: ${player2Wins}`;
+      }
+      return winner;
+    }
+  }
+
+  if (!board.includes(null)) {
+    return 'tie';
+  }
+
+  return null;
+}
         function highlightWinningCells(cells) {
           cells.forEach(index => {
             document.querySelector(`[data-index="${index}"]`).classList.add('winning-cell');
